@@ -7,8 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const pauseButton = document.getElementById("pause-btn");
   const playTQButton = document.getElementById("playtq-btn");
   const showTQButton = document.getElementById("showtq-btn");
+  const playTatiButton = document.getElementById("playtati-btn");
+  const showTatiButton = document.getElementById("showtati-btn");
   const selectedElementTextDiv = document.getElementById("element-text");
   const tiquitaqaTextDiv = document.getElementById("tq-text");
+  const tatiTextDiv = document.getElementById("tati-text");
 
   let selectedScale = null;
   let currentScale = "Bayaty";
@@ -17,22 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedNote = "";
   let avoided = [];
   let tqList = [];
+  let currentlyPlayingAudio = null;
 
   const notes = ["do", "ri", "mi", "fa", "sol", "la", "si", "do-", "ri"];
 
   function toggleSwitch() {
     isSwitchOn = !isSwitchOn;
-
     if (selectedElementTextDiv) {
       selectedElementTextDiv.innerText = "";
     }
-    updatePauseButtonLabel();
-  }
-
-  function updatePauseButtonLabel() {
-    const pauseButton = document.getElementById("pause-btn");
-    if (pauseButton) {
-      pauseButton.textContent = isSwitchOn ? "Pause" : "Show";
+    if (isSwitchOn) {
+      intervalId = setInterval(playRandomTone, 4000);
+    } else {
+      stopPlaying();
     }
   }
 
@@ -69,34 +69,27 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       let temp = [...avoided];
       temp = avoided.filter((e) => e != notes[clickedTone.dataset.note]);
-      // console.log("temp", temp);
       avoided = temp;
     }
   };
 
   // Function to handle play/pause button click
   const handlePlayButton = () => {
-    if (isSwitchOn) {
-      intervalId = setInterval(playRandomTone, 4000);
-    } else {
-      if (selectedElementTextDiv) {
-        selectedElementTextDiv.innerText = "";
-      }
+    if (selectedElementTextDiv) {
+      selectedElementTextDiv.innerText = "";
+    }
+    if (!isSwitchOn) {
       playRandomTone();
     }
-
-    playButton?.classList.remove("off");
-    playButton?.classList.add("on");
-    pauseButton?.classList.remove("on");
-    pauseButton?.classList.add("off");
   };
 
   const playRandomTone = () => {
-    let finalNotesList = getFianlList();
+    let finalNotesList = notes.filter((x) => !avoided.includes(x));
     const randomIndex = Math.floor(Math.random() * finalNotesList.length);
 
     selectedNote = finalNotesList[randomIndex];
     let audioPath;
+    stopCurrentlyPlaying();
 
     if (isSwitchOn) {
       audioPath = `audioAuto/${currentScale}/${selectedNote}.mp3`;
@@ -106,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const audio = new Audio(audioPath);
     audio.play();
+    currentlyPlayingAudio = audio;
   };
 
   // keyboard pressing
@@ -113,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const whiteKeyPressed = (event) => {
     const clickedTone = event.target;
     console.log("pressed", clickedTone.dataset.key);
+    stopCurrentlyPlaying();
 
     let keyAudioPath;
 
@@ -120,49 +115,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const keyAudio = new Audio(keyAudioPath);
     keyAudio.play();
+    currentlyPlayingAudio = keyAudio;
   };
   // Function to stop playing
   const stopPlaying = () => {
-    if (isSwitchOn) {
-      clearInterval(intervalId);
-      pauseButton?.classList.remove("off");
-      pauseButton?.classList.add("on");
+    clearInterval(intervalId);
+  };
 
-      playButton?.classList.remove("on");
-      playButton?.classList.add("off");
-    } else {
-      if (selectedElementTextDiv) {
-        selectedElementTextDiv.innerText = selectedNote;
-      }
+  const showSingleNote = () => {
+    if (selectedElementTextDiv) {
+      selectedElementTextDiv.innerText = selectedNote;
     }
   };
 
-  const playTQ = () => {
+  const playTQ = (event) => {
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerText = "";
     }
-
-    tqList = getRandomElementsFromArray(notes, 4);
+    if (tatiTextDiv) {
+      tatiTextDiv.innerText = "";
+    }
+    const clickedScale = event.target;
+    tqList = getRandomElementsFromArray(notes, clickedScale.dataset.seq);
     console.log("randomelements", tqList);
-    playSoundsSequentially(tqList);
+    if (!isSwitchOn) {
+      playSoundsSequentially(tqList);
+    }
   };
-  const showTQ = () => {
+  const showTQ = (event) => {
+    const clickedScale = event.target;
+    let content = "";
+    for (const element of tqList) {
+      content += element + "<br>";
+    }
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerHTML = "";
-      let content = "";
-      for (const element of tqList) {
-        content += element + "<br>";
+    }
+    if (tatiTextDiv) {
+      tatiTextDiv.innerHTML = "";
+    }
+
+    if (clickedScale.dataset.seq == "2") {
+      if (tatiTextDiv) {
+        tatiTextDiv.insertAdjacentHTML("beforeend", content);
       }
-      tiquitaqaTextDiv.insertAdjacentHTML("beforeend", content);
+    } else {
+      if (tiquitaqaTextDiv) {
+        tiquitaqaTextDiv.insertAdjacentHTML("beforeend", content);
+      }
     }
   };
 
-  // calculate final list with avoided
-  const getFianlList = () => {
-    let final = notes.filter((x) => !avoided.includes(x));
-
-    return final;
-  };
   // Add click event listeners to the buttons
   scaleButtons.forEach((button) => {
     button.addEventListener("click", handleScaleClick);
@@ -178,6 +181,18 @@ document.addEventListener("DOMContentLoaded", () => {
   whiteKeys.forEach((button) => {
     button.addEventListener("click", whiteKeyPressed);
   });
+
+  // Add event listeners to the play and pause buttons
+  playButton?.addEventListener("click", handlePlayButton);
+  pauseButton?.addEventListener("click", showSingleNote);
+  playTQButton?.addEventListener("click", playTQ);
+  showTQButton?.addEventListener("click", showTQ);
+  playTatiButton?.addEventListener("click", playTQ);
+  showTatiButton?.addEventListener("click", showTQ);
+
+  document
+    .getElementById("toggle-switch")
+    ?.addEventListener("click", toggleSwitch);
 
   // helper function
   function getRandomElementsFromArray(array, count) {
@@ -196,25 +211,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function playNextSound() {
       if (index < soundsArray.length) {
+        stopCurrentlyPlaying();
         let keyAudioPath;
         keyAudioPath = `audio/${currentScale}/${soundsArray[index]}.mp3`;
         const audio = new Audio(keyAudioPath);
         audio.onended = playNextSound;
         audio.play();
+        currentlyPlayingAudio = audio;
         index++;
       }
     }
 
     playNextSound();
   }
-
-  // Add event listeners to the play and pause buttons
-  playButton?.addEventListener("click", handlePlayButton);
-  pauseButton?.addEventListener("click", stopPlaying);
-  playTQButton?.addEventListener("click", playTQ);
-  showTQButton?.addEventListener("click", showTQ);
-
-  document
-    .getElementById("toggle-switch")
-    ?.addEventListener("click", toggleSwitch);
+  function stopCurrentlyPlaying() {
+    if (currentlyPlayingAudio) {
+      currentlyPlayingAudio.pause();
+    }
+  }
 });

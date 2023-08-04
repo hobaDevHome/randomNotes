@@ -1,61 +1,162 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Scale Player</title>
+    <title>Ear Training</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="app.js"></script>
   </head>
   <body>
-    <div class="container">
-      <h1>Select a Scale:</h1>
-
+    <div class="Mycontainer">
       <div class="buttons">
-        <button class="btn scale-btn" data-scale="1">Saba</button>
-        <button class="btn scale-btn" data-scale="2">Nahawand</button>
-        <button class="btn scale-btn" data-scale="3">Agam</button>
-        <button class="btn scale-btn" data-scale="4">Bayaty</button>
-        <button class="btn scale-btn" data-scale="5">Sika</button>
-        <button class="btn scale-btn" data-scale="6">Hogaz</button>
-        <button class="btn scale-btn" data-scale="7">Rust</button>
-        <button class="btn scale-btn" data-scale="8">Kurd</button>
+        <button class="myBtn scale-btn" data-scale="1">Saba</button>
+        <button class="myBtn scale-btn" data-scale="2">Nahawand</button>
+        <button class="myBtn scale-btn" data-scale="3">Agam</button>
+        <button class="myBtn scale-btn" data-scale="4">Bayaty</button>
+        <button class="myBtn scale-btn" data-scale="5">Sika</button>
+        <button class="myBtn scale-btn" data-scale="6">Hogaz</button>
+        <button class="myBtn scale-btn" data-scale="7">Rust</button>
+        <button class="myBtn scale-btn" data-scale="8">Kurd</button>
       </div>
 
-      <!-- play and show notes -->
-      <div class="playing-section">
-        <!-- single note play -->
-        <div class="left">
-          <sppan>Play single note</sppan>
-          <div class="note-div" id="element-text"></div>
-          <button class="btn on" id="play-btn">Play</button>
-          <button class="btn off" id="pause-btn">Show</button>
+      <!-- trying accordion  -->
+      <div class="accordion" id="accordionExample" style="width: 400px">
+        <div class="card">
+          <button
+            class="btn btn-link"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            <div id="headingOne">
+              <h5 class="mb-0">Autoplay</h5>
+            </div>
+          </button>
+
+          <div
+            id="collapseOne"
+            class="collapse collapse"
+            aria-labelledby="headingOne"
+            data-parent="#accordionExample"
+          >
+            <div class="card-body">
+              <div class="auto-div">
+                <label class="toggle">
+                  <input
+                    class="toggle-checkbox"
+                    type="checkbox"
+                    id="toggle-switch"
+                  />
+                  <div class="toggle-switch"></div>
+                  <span class="toggle-label">Autoplay</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="left">
-          <!-- Autoplay swithc -->
-          <label class="toggle">
-            <input class="toggle-checkbox" type="checkbox" id="toggle-switch" />
-            <div class="toggle-switch"></div>
-            <span class="toggle-label">Autoplay</span>
-          </label>
+        <div class="card">
+          <button
+            class="btn btn-link collapsed"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseTwo"
+            aria-expanded="false"
+            aria-controls="collapseTwo"
+          >
+            <div id="headingTwo">
+              <h5 class="mb-0">Play single note</h5>
+            </div>
+          </button>
+          <div
+            id="collapseTwo"
+            class="collapse"
+            aria-labelledby="headingTwo"
+            data-parent="#accordionExample"
+          >
+            <div class="card-body">
+              <div class="note-div" id="element-text"></div>
+              <button class="myBtn on" id="play-btn">Play Single Note</button>
+              <button class="myBtn off" id="pause-btn">Show Single Note</button>
+            </div>
+          </div>
         </div>
-        <div class="left">
-          <!-- play tiqy taqa -->
-          <sppan>Play tiqui taqa</sppan>
-          <div class="tq-div" id="tq-text"></div>
-          <button class="btn on" id="playtq-btn">Play Tiqui Taqa</button>
-          <button class="btn off" id="showtq-btn">Show Tiqui Taqa</button>
+        <div class="card">
+          <button
+            class="btn btn-link collapsed"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseThree"
+            aria-expanded="false"
+            aria-controls="collapseThree"
+          >
+            <div id="headingThree">
+              <h5 class="mb-0">Play Ta Ti</h5>
+            </div>
+          </button>
+          <div
+            id="collapseThree"
+            class="collapse"
+            aria-labelledby="headingThree"
+            data-parent="#accordionExample"
+          >
+            <div class="card-body">
+              <div class="tq-div" id="tati-text"></div>
+              <button class="myBtn on" id="playtati-btn" data-seq="2">
+                Play Ta Ti
+              </button>
+              <button class="myBtn off" id="showtati-btn" data-seq="2">
+                Show Ta Ti
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <button
+            class="btn btn-link collapsed"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseFour"
+            aria-expanded="false"
+            aria-controls="collapseFour"
+          >
+            <div id="headingFour">
+              <h5 class="mb-0">Play tiqui taqa</h5>
+            </div>
+          </button>
+          <div
+            id="collapseFour"
+            class="collapse"
+            aria-labelledby="headingFour"
+            data-parent="#accordionExample"
+          >
+            <div class="card-body">
+              <div class="tq-div" id="tq-text"></div>
+              <button class="myBtn on" id="playtq-btn" data-seq="4">
+                Play Tiqui Taqa
+              </button>
+              <button class="myBtn off" id="showtq-btn" data-seq="4">
+                Show Tiqui Taqa
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+      <!-- trying accordion  -->
 
       <!-- custom notes selection -->
       <div class="buttons">
-        <button class="btn tone-btn" data-note="0">do</button>
-        <button class="btn tone-btn" data-note="1">ri</button>
-        <button class="btn tone-btn" data-note="2">mi</button>
-        <button class="btn tone-btn" data-note="3">fa</button>
-        <button class="btn tone-btn" data-note="4">sol</button>
-        <button class="btn tone-btn" data-note="5">la</button>
-        <button class="btn tone-btn" data-note="6">si</button>
-        <button class="btn tone-btn" data-note="7">do-</button>
-        <button class="btn tone-btn" data-note="8">ri</button>
+        <button class="myBtn tone-btn" data-note="0">do</button>
+        <button class="myBtn tone-btn" data-note="1">ri</button>
+        <button class="myBtn tone-btn" data-note="2">mi</button>
+        <button class="myBtn tone-btn" data-note="3">fa</button>
+        <button class="myBtn tone-btn" data-note="4">sol</button>
+        <button class="myBtn tone-btn" data-note="5">la</button>
+        <button class="myBtn tone-btn" data-note="6">si</button>
+        <button class="myBtn tone-btn" data-note="7">do-</button>
+        <button class="myBtn tone-btn" data-note="8">ri</button>
       </div>
 
       <!-- keybord -->
@@ -78,6 +179,7 @@
       </ul>
     </div>
 
-    <script src="app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
