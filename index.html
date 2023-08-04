@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scale Player</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Select a Scale:</h1>
+
+      <div class="buttons">
+        <button class="btn scale-btn" data-scale="1">Saba</button>
+        <button class="btn scale-btn" data-scale="2">Nahawand</button>
+        <button class="btn scale-btn" data-scale="3">Agam</button>
+        <button class="btn scale-btn" data-scale="4">Bayaty</button>
+        <button class="btn scale-btn" data-scale="5">Sika</button>
+        <button class="btn scale-btn" data-scale="6">Hogaz</button>
+        <button class="btn scale-btn" data-scale="7">Rust</button>
+        <button class="btn scale-btn" data-scale="8">Kurd</button>
+      </div>
+
+      <!-- play and show notes -->
+      <div class="playing-section">
+        <!-- single note play -->
+        <div class="left">
+          <sppan>Play single note</sppan>
+          <div class="note-div" id="element-text"></div>
+          <button class="btn on" id="play-btn">Play</button>
+          <button class="btn off" id="pause-btn">Show</button>
+        </div>
+        <div class="left">
+          <!-- Autoplay swithc -->
+          <label class="toggle">
+            <input class="toggle-checkbox" type="checkbox" id="toggle-switch" />
+            <div class="toggle-switch"></div>
+            <span class="toggle-label">Autoplay</span>
+          </label>
+        </div>
+        <div class="left">
+          <!-- play tiqy taqa -->
+          <sppan>Play tiqui taqa</sppan>
+          <div class="tq-div" id="tq-text"></div>
+          <button class="btn on" id="playtq-btn">Play Tiqui Taqa</button>
+          <button class="btn off" id="showtq-btn">Show Tiqui Taqa</button>
+        </div>
+      </div>
+
+      <!-- custom notes selection -->
+      <div class="buttons">
+        <button class="btn tone-btn" data-note="0">do</button>
+        <button class="btn tone-btn" data-note="1">ri</button>
+        <button class="btn tone-btn" data-note="2">mi</button>
+        <button class="btn tone-btn" data-note="3">fa</button>
+        <button class="btn tone-btn" data-note="4">sol</button>
+        <button class="btn tone-btn" data-note="5">la</button>
+        <button class="btn tone-btn" data-note="6">si</button>
+        <button class="btn tone-btn" data-note="7">do-</button>
+        <button class="btn tone-btn" data-note="8">ri</button>
+      </div>
+
+      <!-- keybord -->
+      <ul id="keyboard">
+        <li note="C" class="white" data-key="do">Do</li>
+        <li note="C#" class="black"></li>
+        <li note="D" class="white offset" data-key="ri">Ri</li>
+        <li note="D#" class="black"></li>
+        <li note="E" class="white offset" data-key="mi">Mi</li>
+        <li note="F" class="white" data-key="fa">Fa</li>
+        <li note="F#" class="black"></li>
+        <li note="G" class="white offset" data-key="sol">Sol</li>
+        <li note="G#" class="black"></li>
+        <li note="A" class="white offset" data-key="la">La</li>
+        <li note="A#" class="black"></li>
+        <li note="B" class="white offset" data-key="si">Si</li>
+        <li note="C2" class="white" data-key="do-">Do-</li>
+        <li note="C#2" class="black"></li>
+        <li note="D2" class="white offset" data-key="ri">Ri-</li>
+      </ul>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
