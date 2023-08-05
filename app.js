@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let tqList = [];
   let currentlyPlayingAudio = null;
 
-  const notes = ["do", "ri", "mi", "fa", "sol", "la", "si", "do-", "ri"];
+  const notes = ["do", "ri", "mi", "fa", "sol", "la", "si", "do-", "ri-"];
 
   function toggleSwitch() {
     isSwitchOn = !isSwitchOn;
@@ -136,7 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
       tatiTextDiv.innerText = "";
     }
     const clickedScale = event.target;
-    tqList = getRandomElementsFromArray(notes, clickedScale.dataset.seq);
+    let finalNotesList = notes.filter((x) => !avoided.includes(x));
+    tqList = getRandomElementsFromArray(
+      finalNotesList,
+      clickedScale.dataset.seq
+    );
     console.log("randomelements", tqList);
     if (!isSwitchOn) {
       playSoundsSequentially(tqList);
