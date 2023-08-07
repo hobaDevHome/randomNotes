@@ -5,16 +5,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const playButton = document.getElementById("play-btn");
   const pauseButton = document.getElementById("pause-btn");
+
   const playTQButton = document.getElementById("playtq-btn");
   const showTQButton = document.getElementById("showtq-btn");
+
   const playTatiButton = document.getElementById("playtati-btn");
   const showTatiButton = document.getElementById("showtati-btn");
+
+  const showSButton = document.getElementById("showS-btn");
+  const playSButton = document.getElementById("playS-btn");
+  const pauseSButton = document.getElementById("puase2-btn");
+
   const selectedElementTextDiv = document.getElementById("element-text");
   const tiquitaqaTextDiv = document.getElementById("tq-text");
   const tatiTextDiv = document.getElementById("tati-text");
+  const serietextDiv = document.getElementById("series-text");
+
   const replayButton1 = document.getElementById("replay-btn1");
   const replayButton2 = document.getElementById("replay-btn2");
   const replayButton3 = document.getElementById("replay-btn3");
+  const replayButton4 = document.getElementById("replay-btn4");
 
   let selectedScale = null;
   let currentScale = "Bayaty";
@@ -24,6 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let avoided = [];
   let tqList = [];
   let currentlyPlayingAudio = null;
+  let isSeriesPlaying = false;
+  let index = 0;
 
   const notes = ["do", "ri", "mi", "fa", "sol", "la", "si", "do-", "ri-"];
 
@@ -133,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const playTQ = (event) => {
     console.log("play tati");
+    index = 0;
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerText = "";
     }
@@ -148,12 +161,15 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     console.log("tqList", tqList);
     if (!isSwitchOn) {
+      isSeriesPlaying = true;
       playSoundsSequentially(tqList);
     }
   };
   const showTQ = (event) => {
     const clickedScale = event.target;
     let content = "";
+
+    let len = clickedScale.dataset.seq;
     for (const element of tqList) {
       content += element + " ";
     }
@@ -163,21 +179,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tatiTextDiv) {
       tatiTextDiv.innerHTML = "";
     }
+    if (serietextDiv) {
+      serietextDiv.innerHTML = "";
+    }
 
-    if (clickedScale.dataset.seq == "2") {
+    if (len == "2") {
       if (tatiTextDiv) {
         tatiTextDiv.insertAdjacentHTML("beforeend", content);
       }
-    } else {
+    }
+    if (len == "4") {
       if (tiquitaqaTextDiv) {
         tiquitaqaTextDiv.insertAdjacentHTML("beforeend", content);
+      }
+    }
+    if (len == "40") {
+      console.log(len);
+      if (serietextDiv) {
+        serietextDiv.insertAdjacentHTML("beforeend", content);
       }
     }
   };
 
   const replyNote = (event) => {
-    const clickedBtn = event.target;
-
     console.log("re-play single note");
 
     let audioPath;
@@ -200,6 +224,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const pauseTQ = () => {
+    isSeriesPlaying = false;
+    console.log("playing puased");
+  };
   // Add click event listeners to the buttons
   scaleButtons.forEach((button) => {
     button.addEventListener("click", handleScaleClick);
@@ -221,11 +249,15 @@ document.addEventListener("DOMContentLoaded", () => {
   pauseButton?.addEventListener("click", showSingleNote);
   playTQButton?.addEventListener("click", playTQ);
   showTQButton?.addEventListener("click", showTQ);
+  playSButton?.addEventListener("click", playTQ);
+  showSButton?.addEventListener("click", showTQ);
+  pauseSButton?.addEventListener("click", pauseTQ);
   playTatiButton?.addEventListener("click", playTQ);
   showTatiButton?.addEventListener("click", showTQ);
   replayButton1?.addEventListener("click", replyNote);
   replayButton2?.addEventListener("click", replyTati);
   replayButton3?.addEventListener("click", replyTati);
+  replayButton4?.addEventListener("click", replyTati);
 
   document
     .getElementById("toggle-switch")
@@ -245,9 +277,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function playSoundsSequentially(soundsArray) {
-    let index = 0;
-
     function playNextSound() {
+      console.log("index", index);
       if (index < soundsArray.length) {
         stopCurrentlyPlaying();
         let keyAudioPath;
@@ -262,6 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     playNextSound();
   }
+
   function stopCurrentlyPlaying() {
     if (currentlyPlayingAudio) {
       currentlyPlayingAudio.pause();

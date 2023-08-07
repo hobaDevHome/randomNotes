@@ -85,9 +85,15 @@ body {
 
 .note-div {
   border-radius: 10px;
-  border: 1px solid rgb(36, 140, 238);
+  /* border: 1px solid rgb(36, 140, 238); */
   text-align: center;
   font-size: 30px;
+  padding: 5px;
+}
+.note-seires-div {
+  border-radius: 10px;
+  /* border: 1px solid rgb(36, 140, 238); */
+  padding: 5px;
 }
 .tq-div {
   width: 100px;
