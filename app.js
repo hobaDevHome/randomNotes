@@ -144,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const playTQ = (event, caller = "not space") => {
-    console.log("play called", caller);
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerText = "";
     }
@@ -245,6 +244,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const replyTati = (event) => {
     if (!isSwitchOn) {
+      index = 0;
+      isPuased = false;
       playSoundsSequentially(tqList);
     }
   };
@@ -267,12 +268,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleKeyPress(event) {
     const pressedKey = event.key;
     if (pressedKey === " ") {
-      console.log(`You pressed the space bar`);
       if (isPuased) {
-        console.log("i am pused and gonna play");
         playTQ(event, "space");
       } else {
-        console.log("i am playing and gonna puse");
         pauseTQ();
       }
     }
