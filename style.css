@@ -35,7 +35,9 @@ body {
 }
 .left {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 .auto-div {
   display: flex;
@@ -71,21 +73,21 @@ body {
   background-color: rgb(227, 80, 247);
   color: black;
 }
-
+.icon {
+  color: rgb(29, 168, 157);
+  margin-right: 10px;
+  cursor: pointer;
+}
 .off {
   background-color: rgb(169, 177, 177);
   color: black;
 }
 
 .note-div {
-  width: 200px;
-  height: 100px;
-  background-color: rgb(235, 241, 178);
-  color: #007bff;
-  margin: 20px auto;
+  border-radius: 10px;
+  border: 1px solid rgb(36, 140, 238);
   text-align: center;
-  font-size: 80px;
-  text-transform: uppercase;
+  font-size: 30px;
 }
 .tq-div {
   width: 100px;

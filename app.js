@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedElementTextDiv = document.getElementById("element-text");
   const tiquitaqaTextDiv = document.getElementById("tq-text");
   const tatiTextDiv = document.getElementById("tati-text");
+  const replayButton1 = document.getElementById("replay-btn1");
+  const replayButton2 = document.getElementById("replay-btn2");
+  const replayButton3 = document.getElementById("replay-btn3");
 
   let selectedScale = null;
   let currentScale = "Bayaty";
@@ -129,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const playTQ = (event) => {
+    console.log("play tati");
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerText = "";
     }
@@ -137,11 +141,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const clickedScale = event.target;
     let finalNotesList = notes.filter((x) => !avoided.includes(x));
+    console.log("clickedScale.dataset.seq", clickedScale);
     tqList = getRandomElementsFromArray(
       finalNotesList,
       clickedScale.dataset.seq
     );
-    console.log("randomelements", tqList);
+    console.log("tqList", tqList);
     if (!isSwitchOn) {
       playSoundsSequentially(tqList);
     }
@@ -150,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const clickedScale = event.target;
     let content = "";
     for (const element of tqList) {
-      content += element + "<br>";
+      content += element + " ";
     }
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerHTML = "";
@@ -167,6 +172,31 @@ document.addEventListener("DOMContentLoaded", () => {
       if (tiquitaqaTextDiv) {
         tiquitaqaTextDiv.insertAdjacentHTML("beforeend", content);
       }
+    }
+  };
+
+  const replyNote = (event) => {
+    const clickedBtn = event.target;
+
+    console.log("re-play single note");
+
+    let audioPath;
+    stopCurrentlyPlaying();
+
+    if (isSwitchOn) {
+      audioPath = `audioAuto/${currentScale}/${selectedNote}.mp3`;
+    } else {
+      audioPath = `audio/${currentScale}/${selectedNote}.mp3`;
+    }
+
+    const audio = new Audio(audioPath);
+    audio.play();
+    currentlyPlayingAudio = audio;
+  };
+
+  const replyTati = (event) => {
+    if (!isSwitchOn) {
+      playSoundsSequentially(tqList);
     }
   };
 
@@ -193,6 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
   showTQButton?.addEventListener("click", showTQ);
   playTatiButton?.addEventListener("click", playTQ);
   showTatiButton?.addEventListener("click", showTQ);
+  replayButton1?.addEventListener("click", replyNote);
+  replayButton2?.addEventListener("click", replyTati);
+  replayButton3?.addEventListener("click", replyTati);
 
   document
     .getElementById("toggle-switch")
@@ -201,6 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // helper function
   function getRandomElementsFromArray(array, count) {
     const randomElements = [];
+    console.log("get ranodm", count);
 
     for (let i = 0; i < count; i++) {
       const randomIndex = Math.floor(Math.random() * array.length);
