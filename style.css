@@ -55,7 +55,7 @@ body {
 }
 
 .scale-btn {
-  background-color: #632acc;
+  background-color: #328368;
 }
 
 .tone-btn {
@@ -70,8 +70,8 @@ body {
 }
 
 .selected-scale {
-  background-color: rgb(227, 80, 247);
-  color: black;
+  background-color: rgb(161, 11, 99);
+  color: white;
 }
 .icon {
   color: rgb(29, 168, 157);
@@ -85,7 +85,11 @@ body {
 
 .note-div {
   border-radius: 10px;
-  /* border: 1px solid rgb(36, 140, 238); */
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   font-size: 30px;
   padding: 5px;
