@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let avoided = [];
   let tqList = [];
   let currentlyPlayingAudio = null;
-  let isSeriesPlaying = false;
+  let isPuased = false;
   let index = 0;
 
   const notes = ["do", "ri", "mi", "fa", "sol", "la", "si", "do-", "ri-"];
@@ -145,24 +145,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const playTQ = (event) => {
     console.log("play tati");
-    index = 0;
+
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerText = "";
     }
     if (tatiTextDiv) {
       tatiTextDiv.innerText = "";
     }
+    if (serietextDiv) {
+      serietextDiv.innerText = "";
+    }
     const clickedScale = event.target;
+
     let finalNotesList = notes.filter((x) => !avoided.includes(x));
+
     console.log("clickedScale.dataset.seq", clickedScale);
+
     tqList = getRandomElementsFromArray(
       finalNotesList,
       clickedScale.dataset.seq
     );
     console.log("tqList", tqList);
+
     if (!isSwitchOn) {
-      isSeriesPlaying = true;
-      playSoundsSequentially(tqList);
+      if (clickedScale.dataset.seq == "40") {
+        console.log("play 40");
+        if (isPuased) {
+          isPuased = false;
+          playSoundsSequentially(tqList);
+        } else {
+          index = 0;
+          playSoundsSequentially(tqList);
+        }
+      } else {
+        index = 0;
+        playSoundsSequentially(tqList);
+      }
     }
   };
   const showTQ = (event) => {
@@ -225,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const pauseTQ = () => {
-    isSeriesPlaying = false;
+    isPuased = true;
     console.log("playing puased");
   };
   // Add click event listeners to the buttons
@@ -279,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function playSoundsSequentially(soundsArray) {
     function playNextSound() {
       console.log("index", index);
-      if (index < soundsArray.length) {
+      if (index < soundsArray.length && !isPuased) {
         stopCurrentlyPlaying();
         let keyAudioPath;
         keyAudioPath = `audio/${currentScale}/${soundsArray[index]}.mp3`;
