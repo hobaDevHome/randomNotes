@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const whiteKeyPressed = (event) => {
     const clickedTone = event.target;
-    console.log("pressed", clickedTone.dataset.key);
+
     stopCurrentlyPlaying();
 
     let keyAudioPath;
@@ -143,9 +143,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const playTQ = (event) => {
-    console.log("play tati");
-
+  const playTQ = (event, caller = "not space") => {
+    console.log("play called", caller);
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerText = "";
     }
@@ -157,32 +156,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const clickedScale = event.target;
 
-    let finalNotesList = notes.filter((x) => !avoided.includes(x));
-
-    console.log("clickedScale.dataset.seq", clickedScale);
-
-    tqList = getRandomElementsFromArray(
-      finalNotesList,
-      clickedScale.dataset.seq
-    );
-    console.log("tqList", tqList);
-
     if (!isSwitchOn) {
-      if (clickedScale.dataset.seq == "40") {
-        console.log("play 40");
+      if (clickedScale.dataset.seq == "40" || caller == "space") {
         if (isPuased) {
           isPuased = false;
           playSoundsSequentially(tqList);
         } else {
           index = 0;
+          let finalNotesList = notes.filter((x) => !avoided.includes(x));
+
+          tqList = getRandomElementsFromArray(
+            finalNotesList,
+            clickedScale.dataset.seq
+          );
+
           playSoundsSequentially(tqList);
         }
       } else {
+        isPuased = false;
         index = 0;
+        let finalNotesList = notes.filter((x) => !avoided.includes(x));
+
+        tqList = getRandomElementsFromArray(
+          finalNotesList,
+          clickedScale.dataset.seq
+        );
+
         playSoundsSequentially(tqList);
       }
     }
   };
+
+  const pauseTQ = () => {
+    isPuased = true;
+
+    console.log("playing puased");
+  };
+
   const showTQ = (event) => {
     const clickedScale = event.target;
     let content = "";
@@ -212,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     if (len == "40") {
-      console.log(len);
       if (serietextDiv) {
         serietextDiv.insertAdjacentHTML("beforeend", content);
       }
@@ -220,8 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const replyNote = (event) => {
-    console.log("re-play single note");
-
     let audioPath;
     stopCurrentlyPlaying();
 
@@ -241,11 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
       playSoundsSequentially(tqList);
     }
   };
-
-  const pauseTQ = () => {
-    isPuased = true;
-    console.log("playing puased");
-  };
   // Add click event listeners to the buttons
   scaleButtons.forEach((button) => {
     button.addEventListener("click", handleScaleClick);
@@ -261,6 +263,20 @@ document.addEventListener("DOMContentLoaded", () => {
   whiteKeys.forEach((button) => {
     button.addEventListener("click", whiteKeyPressed);
   });
+
+  function handleKeyPress(event) {
+    const pressedKey = event.key;
+    if (pressedKey === " ") {
+      console.log(`You pressed the space bar`);
+      if (isPuased) {
+        console.log("i am pused and gonna play");
+        playTQ(event, "space");
+      } else {
+        console.log("i am playing and gonna puse");
+        pauseTQ();
+      }
+    }
+  }
 
   // Add event listeners to the play and pause buttons
   playButton?.addEventListener("click", handlePlayButton);
@@ -281,10 +297,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("toggle-switch")
     ?.addEventListener("click", toggleSwitch);
 
+  // Attach the event listener to the document
+  document.addEventListener("keydown", handleKeyPress);
+
   // helper function
   function getRandomElementsFromArray(array, count) {
     const randomElements = [];
-    console.log("get ranodm", count);
 
     for (let i = 0; i < count; i++) {
       const randomIndex = Math.floor(Math.random() * array.length);
@@ -295,8 +313,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function playSoundsSequentially(soundsArray) {
+    console.log("soundsArray", soundsArray);
     function playNextSound() {
-      console.log("index", index);
+      console.log("index: ", index);
       if (index < soundsArray.length && !isPuased) {
         stopCurrentlyPlaying();
         let keyAudioPath;
