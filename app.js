@@ -194,12 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const showTQ = (event) => {
     const clickedScale = event.target;
-    let content = "";
-
-    let len = clickedScale.dataset.seq;
-    for (const element of tqList) {
-      content += element + " ";
-    }
     if (tiquitaqaTextDiv) {
       tiquitaqaTextDiv.innerHTML = "";
     }
@@ -208,6 +202,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (serietextDiv) {
       serietextDiv.innerHTML = "";
+    }
+    let content = "";
+    let len = clickedScale.dataset.seq;
+
+    if (len == 40) {
+      for (let i = 0; i < tqList.length; i++) {
+        if ((i + 1) % 4 == 0) {
+          content += tqList[i] + "<br>";
+        } else {
+          content += tqList[i] + " ";
+        }
+      }
+    } else {
+      for (const element of tqList) {
+        content += element + " ";
+      }
     }
 
     if (len == "2") {
